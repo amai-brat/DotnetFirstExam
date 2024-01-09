@@ -2,21 +2,21 @@
 @model Shared.Game?
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "DndCombat";
     Layout = "_Layout";
 }
 
-@using (Html.BeginForm("Check", "DndCombat", FormMethod.Post))
+@using (Html.BeginForm("Index", "DndCombat", FormMethod.Post))
 {
     @Html.EditorFor(game => game.Character)
     <br/>
-    @if (Model?.Result?.WinnerName == Model?.Character?.Name)
+    @if (Model?.Result == null || Model.Result.WinnerName == Model.Character!.Name)
     {
         <button type="submit">Fight</button>
     }
     else
     {
-        <button type="submit">Вы мертвы</button>
+        <button type="submit" disabled>Вы мертвы</button>
     }
 }
 
@@ -44,10 +44,10 @@
                     <p>@log.AttackDiceRolls[j] (+@log.AttackModifier+@log.Weapon) меньше @log.AttackedArmorClass, промах.</p>
                     break;
                 case HitType.Hit:
-                    <p>@log.AttackDiceRolls[j] (+@log.AttackModifier+@log.Weapon) больше или равно @log.AttackedArmorClass, попадание. @log.DamageRolls[j] (+@log.Weapon+@log.DamageModifier) наносит @log.Damages[j] урона @log.AttackedName (@log.AttackedHitPoints).</p>
+                    <p>@log.AttackDiceRolls[j] (+@log.AttackModifier+@log.Weapon) больше или равно @log.AttackedArmorClass, попадание. @log.DamageRolls[j] (+@log.Weapon+@log.DamageModifier) наносит @log.Damages[j] урона @log.AttackedName (@log.AttackedHitPoints[j]).</p>
                     break;
                 case HitType.CriticalHit:
-                    <p>@log.AttackDiceRolls[j] (+@log.AttackModifier+@log.Weapon), критическое попадание. @log.DamageRolls[j] (+@log.Weapon+@log.DamageModifier) *2 наносит @log.Damages[j] урона @log.AttackedName (@log.AttackedHitPoints).</p>
+                    <p>@log.AttackDiceRolls[j] (+@log.AttackModifier+@log.Weapon), критическое попадание. @log.DamageRolls[j] (+@log.Weapon+@log.DamageModifier) *2 наносит @log.Damages[j] урона @log.AttackedName (@log.AttackedHitPoints[j]).</p>
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

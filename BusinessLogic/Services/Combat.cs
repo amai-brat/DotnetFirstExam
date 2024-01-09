@@ -53,7 +53,8 @@ public class Combat : ICombat
             AttackDiceRolls = new int[attacker.AttackPerRound],
             HitTypes = new HitType[attacker.AttackPerRound],
             Damages = new int[attacker.AttackPerRound],
-            DamageRolls = new int[attacker.AttackPerRound]
+            DamageRolls = new int[attacker.AttackPerRound],
+            AttackedHitPoints = new int[attacker.AttackPerRound]
         };
                 
         for (var i = 0; i < attacker.AttackPerRound; i++)
@@ -87,7 +88,7 @@ public class Combat : ICombat
                     log.HitTypes[i] = HitType.Miss;
                 }
             }
-            log.AttackedHitPoints = attacked.HitPoints;
+            log.AttackedHitPoints[i] = attacked.HitPoints;
         }
 
         return log;

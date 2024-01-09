@@ -10,8 +10,8 @@ public class CombatLog
     public int Weapon { get; set; }
     
     public int AttackedArmorClass { get; set; }
-    public int AttackedHitPoints { get; set; }
-    
+    public int[] AttackedHitPoints { get; set; } = null!;
+
     public int AttackPerRound { get; set; }
     public int[] AttackDiceRolls { get; set; } = null!;
     public HitType[] HitTypes { get; set; } = null!;
