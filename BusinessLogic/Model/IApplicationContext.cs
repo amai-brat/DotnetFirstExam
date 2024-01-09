@@ -6,4 +6,5 @@ namespace BusinessLogic.Model;
 public interface IApplicationContext
 {
     public DbSet<Monster> Monsters { get; }
+    public Task<Monster> GetRandomMonsterAsync();
 }
