@@ -6,6 +6,7 @@
     Layout = "_Layout";
 }
 
+<h2>Вы</h2>
 @using (Html.BeginForm("Index", "DndCombat", FormMethod.Post))
 {
     @Html.EditorFor(game => game.Character)
@@ -20,6 +21,21 @@
     }
 }
 
+@if (Model?.Enemy is not null)
+{
+    <h2>Монстр</h2>
+    var monster = Model!.Enemy;
+    <h3>@monster.Name</h3>
+    <p>
+        Хит-поинты: @monster.HitPoints <br/>
+        Модификатор атаки: @monster.AttackModifier <br/>
+        Модификатор урона: @monster.DamageModifier <br/>
+        Урон: @monster.Damage <br/>
+        Класс брони: @monster.ArmorClass <br/>
+        Атак за раунд: @monster.AttackPerRound <br/>
+    </p>
+
+}
 @if (Model?.Result is not null)
 {
     <h2>Logs</h2>
