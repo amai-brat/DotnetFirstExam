@@ -21,20 +21,24 @@ public class DndCombatController : Controller
     }
 
     [HttpPost]
-    public IActionResult Index(Character character)
+    public IActionResult Index(Game game)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(character);
-
-        }
-
-        return RedirectToAction("Game", character);
+        return View(game);
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Game(Character character)
+    [HttpPost]
+    public async Task<IActionResult> Check(Character character)
     {
+        Game game;
+        if (!ModelState.IsValid)
+        {
+            game = new Game()
+            {
+                Character = character
+            };
+            return RedirectToAction("Index", game);
+        }
+        
         var monster = await _businessLogicClient.GetRandomMonsterAsync();
         var result = await _businessLogicClient.GetResultOfCombatAsync(
             new CharacterAndMonsterDto
@@ -42,7 +46,14 @@ public class DndCombatController : Controller
                 Character = character,
                 Monster = monster!
             });
-        
-        return Ok(result);
+
+        game = new Game
+        {
+            Character = character,
+            Enemy = monster,
+            Result = result
+        };
+
+        return View("Index", game);
     }
 }

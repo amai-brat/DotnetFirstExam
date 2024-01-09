@@ -8,8 +8,7 @@ public class ApplicationContext : DbContext, IApplicationContext
     public DbSet<Monster> Monsters => Set<Monster>();
     public async Task<Monster> GetRandomMonsterAsync()
     {
-        var count = await Monsters.CountAsync();
-        return await Monsters.ElementAtAsync(Random.Shared.Next(0, count));
+        return await Monsters.OrderBy(_ => EF.Functions.Random()).Take(1).FirstAsync();
     }
 
     public ApplicationContext(DbContextOptions options) : base(options)

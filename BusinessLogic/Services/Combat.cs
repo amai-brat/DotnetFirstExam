@@ -52,7 +52,8 @@ public class Combat : ICombat
             AttackPerRound = attacker.AttackPerRound,
             AttackDiceRolls = new int[attacker.AttackPerRound],
             HitTypes = new HitType[attacker.AttackPerRound],
-            Damages = new int[attacker.AttackPerRound]
+            Damages = new int[attacker.AttackPerRound],
+            DamageRolls = new int[attacker.AttackPerRound]
         };
                 
         for (var i = 0; i < attacker.AttackPerRound; i++)
@@ -66,9 +67,9 @@ public class Combat : ICombat
             else if (attackDiceRoll == 20)
             {
                 log.HitTypes[i] = HitType.CriticalHit;
-                var splitted = attacker.Damage.Split('d');
-                log.Damages[i] = attacker.Weapon + attacker.DamageModifier +
-                                 GetSumOfDamageRolls(2 * int.Parse(splitted[0]), int.Parse(splitted[1]));
+                var splitted = attacker.Damage.Split('d'); 
+                log.DamageRolls[i] = GetSumOfDamageRolls(int.Parse(splitted[0]), int.Parse(splitted[1]));
+                log.Damages[i] = 2 * (attacker.Weapon + attacker.DamageModifier + log.DamageRolls[i]);
                 attacked.HitPoints -= log.Damages[i];
             }
             else
@@ -77,8 +78,8 @@ public class Combat : ICombat
                 {
                     log.HitTypes[i] = HitType.Hit;
                     var splitted = attacker.Damage.Split('d');
-                    log.Damages[i] = attacker.Weapon + attacker.DamageModifier +
-                                     GetSumOfDamageRolls(int.Parse(splitted[0]), int.Parse(splitted[1]));
+                    log.DamageRolls[i] = GetSumOfDamageRolls(int.Parse(splitted[0]), int.Parse(splitted[1]));
+                    log.Damages[i] = attacker.Weapon + attacker.DamageModifier + log.DamageRolls[i];
                     attacked.HitPoints -= log.Damages[i];
                 }
                 else

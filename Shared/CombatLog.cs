@@ -15,5 +15,6 @@ public class CombatLog
     public int AttackPerRound { get; set; }
     public int[] AttackDiceRolls { get; set; } = null!;
     public HitType[] HitTypes { get; set; } = null!;
+    public int[] DamageRolls { get; set; } = null!;
     public int[] Damages { get; set; } = null!;
 }

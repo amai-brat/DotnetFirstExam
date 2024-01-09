@@ -1,13 +1,61 @@
-@model Shared.Character
+@using Shared
+@model Shared.Game?
 
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
 
-@using (Html.BeginForm("Index", "DndCombat", FormMethod.Post))
+@using (Html.BeginForm("Check", "DndCombat", FormMethod.Post))
 {
-    @Html.EditorForModel()
+    @Html.EditorFor(game => game.Character)
     <br/>
-    <button type="submit">Fight</button>
+    @if (Model?.Result?.WinnerName == Model?.Character?.Name)
+    {
+        <button type="submit">Fight</button>
+    }
+    else
+    {
+        <button type="submit">Вы мертвы</button>
+    }
 }
+
+@if (Model?.Result is not null)
+{
+    <h2>Logs</h2>
+    @for (var i = 0; i < Model.Result?.Logs.Count; i++)
+    {
+        if (i % 2 == 0)
+        {
+            var round = i / 2 + 1;
+            <h4>Round @round</h4>
+        }
+
+        var log = Model.Result!.Logs[i];
+        <h5>@log.AttackerName</h5>
+        @for (var j = 0; j < log.AttackPerRound; j++)
+        {
+            @switch (log.HitTypes[j])
+            {
+                case HitType.CriticalMiss:
+                    <p>@log.AttackDiceRolls[j] (+@log.AttackModifier+@log.Weapon), критический промах.</p>
+                    break;
+                case HitType.Miss:
+                    <p>@log.AttackDiceRolls[j] (+@log.AttackModifier+@log.Weapon) меньше @log.AttackedArmorClass, промах.</p>
+                    break;
+                case HitType.Hit:
+                    <p>@log.AttackDiceRolls[j] (+@log.AttackModifier+@log.Weapon) больше или равно @log.AttackedArmorClass, попадание. @log.DamageRolls[j] (+@log.Weapon+@log.DamageModifier) наносит @log.Damages[j] урона @log.AttackedName (@log.AttackedHitPoints).</p>
+                    break;
+                case HitType.CriticalHit:
+                    <p>@log.AttackDiceRolls[j] (+@log.AttackModifier+@log.Weapon), критическое попадание. @log.DamageRolls[j] (+@log.Weapon+@log.DamageModifier) *2 наносит @log.Damages[j] урона @log.AttackedName (@log.AttackedHitPoints).</p>
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+    }
+    
+    <h2>Winner</h2>
+    @Model.Result!.WinnerName
+}
+
