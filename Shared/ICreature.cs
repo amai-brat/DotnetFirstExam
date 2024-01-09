@@ -2,6 +2,7 @@ namespace Shared;
 
 public interface ICreature
 {
+    public string Name { get; set; }
     public int HitPoints { get; set; }
     public int AttackModifier { get; set; }
     public int AttackPerRound { get; set; }

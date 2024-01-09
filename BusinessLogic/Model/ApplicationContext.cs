@@ -20,6 +20,7 @@ public class ApplicationContext : DbContext, IApplicationContext
         var imp = new Monster
         {
             Id = 1,
+            Name = "Imp",
             HitPoints = 10,
             AttackModifier = -2,
             AttackPerRound = 1,
@@ -32,6 +33,7 @@ public class ApplicationContext : DbContext, IApplicationContext
         var kysh = new Monster
         {
             Id = 2,
+            Name = "Kysh",
             HitPoints = 27,
             AttackModifier = 2,
             AttackPerRound = 1,
@@ -44,6 +46,7 @@ public class ApplicationContext : DbContext, IApplicationContext
         var creeper = new Monster
         {
             Id = 3,
+            Name = "Creeper",
             HitPoints = 19,
             AttackModifier = 0,
             AttackPerRound = 1,

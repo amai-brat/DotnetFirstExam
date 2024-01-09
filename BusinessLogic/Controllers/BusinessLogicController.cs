@@ -1,4 +1,5 @@
 using BusinessLogic.Model;
+using BusinessLogic.Services;
 using Microsoft.AspNetCore.Mvc;
 using Shared;
 using Shared.Dto;
@@ -10,20 +11,18 @@ namespace BusinessLogic.Controllers;
 public class BusinessLogicController : Controller
 {
     private readonly IApplicationContext _dbContext;
+    private readonly ICombat _combat;
     
-    public BusinessLogicController(IApplicationContext dbContext)
+    public BusinessLogicController(IApplicationContext dbContext, ICombat combat)
     {
         _dbContext = dbContext;
+        _combat = combat;
     }
 
     [HttpPost]
     public IActionResult GetResult([FromBody] CharacterAndMonsterDto dto)
     {
-        return Ok(new Result
-        {
-            WinnerName = "EM",
-            Logs = new List<CombatLog>()
-        });
+        return Json(_combat.GetResult(dto.Character, dto.Monster));
     }
 
     [HttpGet]
