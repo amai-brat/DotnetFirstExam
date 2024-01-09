@@ -7,7 +7,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<IApplicationContext, ApplicationContext>(options =>
     options.UseNpgsql(builder.Configuration["DbConnectionString"]));
-
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -18,5 +18,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.MapControllers();
 app.Run();

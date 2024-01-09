@@ -1,8 +1,13 @@
-@model dynamic
+@model Shared.Character
 
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
 
-<form></form>
+@using (Html.BeginForm("Index", "DndCombat", FormMethod.Post))
+{
+    @Html.EditorForModel()
+    <br/>
+    <button type="submit">Fight</button>
+}
